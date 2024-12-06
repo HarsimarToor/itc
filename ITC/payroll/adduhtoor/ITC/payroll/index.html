@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../global.css">
+
+  <title>Payroll System</title>
+  <style>
+    .container {
+      background: white;
+      border - radius: 15px;
+      padding: 30px;
+      box - shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      text - align: center;
+      max - width: 400px;
+      animation: fadeIn 1.5s ease - out, bounce 2s infinite ease -in -out alternate;
+
+    }
+
+    .navlinks @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes bounce {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-10px);
+      }
+    }
+
+    h1 {
+      margin - bottom: 20px;
+      color: #4facfe;
+    }
+
+    label {
+      font - size: 1.1rem;
+      display: block;
+      margin: 15px 0 5px;
+    }
+
+    input,
+    select {
+      width: 100 %;
+      padding: 10px;
+      margin - bottom: 20px;
+      border: 1px solid #ccc;
+      border - radius: 5px;
+    }
+
+    button {
+      background: #4facfe;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font - size: 1rem;
+      border - radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background: #00c2fe;
+      transform: scale(1.1);
+    }
+
+    .result {
+      margin - top: 20px;
+      font - size: 1.2rem;
+      color: #4facfe;
+    }
+
+
+    table {
+      border-collapse: collapse;
+      width: 400px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      text-align: center;
+      padding: 10px;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    input {
+      width: 90%;
+      padding: 5px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background-color: #45a049;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="nav-logo">HARSIMAR S. TOOR</div>
+
+    <ul class="nav-links" id="nav-links">
+      <li>
+        <a href="../index.html">Home</a>
+      </li>
+
+      <li>
+        <a href="../about/index.html">About</a>
+      </li>
+    </ul>
+  </nav>
+
+  <main class="flex-center flex-column">
+
+    <div class="container">
+      <table>
+        <thead>
+          <tr>
+            <th colspan="2">Employee Entry</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Name:</td>
+            <td><input type="text" id="name" placeholder="Employee Name"></td>
+          </tr>
+          <tr>
+            <td>Days Worked:</td>
+            <td><input type="number" id="daysWorked" placeholder="Days Worked"></td>
+          </tr>
+          <tr>
+            <td>Daily Rate:</td>
+            <td><input type="number" id="dailyRate" placeholder="Daily Rate"></td>
+          </tr>
+          <tr>
+            <td>Deductions:</td>
+            <td><input type="number" id="deduction" placeholder="Deductions"></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <button class="btn" onclick="addEmployee()">Add Employee</button>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <input type="number" id="deleteIndex" placeholder="Row Number to Delete">
+              <button class="btn" onclick="deleteEmployee()">Delete Row</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Daily Rate</th>
+            <th>Gross Pay</th>
+            <th>Deductions</th>
+            <th>Net Pay</th>
+          </tr>
+        </thead>
+        <tbody id="payrollTable">
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      const payrollTable = document.getElementById("payrollTable");
+
+      function addEmployee() {
+        const name = document.getElementById("name").value.trim();
+        const daysWorked = parseFloat(document.getElementById("daysWorked").value);
+        const dailyRate = parseFloat(document.getElementById("dailyRate").value);
+        const deduction = parseFloat(document.getElementById("deduction").value);
+
+        if (!name || isNaN(daysWorked) || isNaN(dailyRate) || isNaN(deduction)) {
+          alert("Please fill out all fields correctly.");
+          return;
+        }
+
+        const grossPay = daysWorked * dailyRate;
+        const netPay = grossPay - deduction;
+
+        const row = payrollTable.insertRow();
+        row.innerHTML = `
+        <td>${name}</td>
+        <td>${dailyRate.toFixed(2)}</td>
+        <td>${grossPay.toFixed(2)}</td>
+        <td>${deduction.toFixed(2)}</td>
+        <td>${netPay.toFixed(2)}</td>
+      `;
+
+        document.getElementById("name").value = "";
+        document.getElementById("daysWorked").value = "";
+        document.getElementById("dailyRate").value = "";
+        document.getElementById("deduction").value = "";
+      }
+
+      function deleteEmployee() {
+        const deleteIndex = parseInt(document.getElementById("deleteIndex").value);
+
+        if (isNaN(deleteIndex) || deleteIndex <= 0 || deleteIndex > payrollTable.rows.length) {
+          alert("Please provide a valid row number.");
+          return;
+        }
+
+        payrollTable.deleteRow(deleteIndex - 1);
+        document.getElementById("deleteIndex").value = "";
+      }
+    </script>
+</body>
+
+</html>
