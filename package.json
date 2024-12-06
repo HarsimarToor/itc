@@ -1,6 +1,0 @@
-{
-  "name": "itcgayrizz",
-  "scripts": {
-    "dev": "npx live-server . --browser=CHROME"
-  }
-}
